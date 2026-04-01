@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+@theme {
+  --font-inter: var(--font-inter);
+  --font-plus-jakarta: var(--font-plus-jakarta);
+  
+  --color-aqua-blue: #1F2A44;
+  --color-aqua-orange: #F5A623;
+}
+
+@layer base {
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-plus-jakarta);
+  }
+}
