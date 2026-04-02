@@ -1,6 +1,11 @@
 'use client';
 
+<<<<<<< HEAD
 import React from 'react';
+=======
+import React, { useState, useEffect } from 'react';
+import { createClient } from '@/lib/supabase';
+>>>>>>> 7e47923 (fix: resolve erros de typescript para deploy na vercel)
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import AdCard from '@/components/AdCard';
@@ -209,7 +214,11 @@ export default function Home() {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+<<<<<<< HEAD
             {displayAds.map((ad) => (
+=======
+            {displayAds.map((ad: any) => (
+>>>>>>> 7e47923 (fix: resolve erros de typescript para deploy na vercel)
               <AdCard 
                 key={ad.id} 
                 id={ad.id}
