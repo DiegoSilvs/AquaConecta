@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { MapPin, Calendar, Star, Edit, Trash2, Camera, Grid, List, Plus, LogOut, Loader2 } from 'lucide-react';
 import { motion } from 'motion/react';
 import Link from 'next/link';
-import { createClient } from '@/lib/supabase';
+import { createClient } from '@/utils/supabase/client';
 import { useRouter } from 'next/navigation';
 
 export default function Profile() {

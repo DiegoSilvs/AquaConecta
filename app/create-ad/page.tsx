@@ -6,7 +6,7 @@ import Footer from '@/components/Footer';
 import { Fish, Droplets, Utensils, Camera, Lightbulb, ArrowRight, MapPin, Phone, Package, DollarSign, Loader2 } from 'lucide-react';
 import { motion } from 'motion/react';
 import Link from 'next/link';
-import { createClient } from '@/lib/supabase';
+import { createClient } from '@/utils/supabase/client';
 import { useRouter } from 'next/navigation';
 
 export default function CreateAd() {
