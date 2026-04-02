@@ -1,11 +1,7 @@
 'use client';
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 7e47923afa33488588fc110797411baf3b3d9610
 import React, { useState, useEffect } from 'react';
-import { createClient } from '@/lib/supabase';
+import { createClient } from '@/utils/supabase/client';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import AdCard from '@/components/AdCard';
@@ -29,11 +25,7 @@ export default function Home() {
         .from('ads')
         .select('*')
         .order('created_at', { ascending: false });
-<<<<<<< HEAD
-
-=======
       
->>>>>>> 7e47923afa33488588fc110797411baf3b3d9610
       if (data) {
         setAds(data);
       }
@@ -77,21 +69,13 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-<<<<<<< HEAD
-
-=======
       
->>>>>>> 7e47923afa33488588fc110797411baf3b3d9610
       <main className="flex-grow pt-24 pb-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         {/* Hero Section */}
         <section className="mb-12">
           <div className="bg-slate-50 rounded-3xl p-8 md:p-12 relative overflow-hidden flex flex-col lg:flex-row items-center gap-10">
             <div className="flex-1 z-10">
-<<<<<<< HEAD
-              <motion.div
-=======
               <motion.div 
->>>>>>> 7e47923afa33488588fc110797411baf3b3d9610
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 className="inline-flex items-center gap-2 bg-white px-3 py-1 rounded-full mb-6 shadow-sm border border-slate-100"
@@ -99,13 +83,8 @@ export default function Home() {
                 <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
                 <span className="text-[10px] font-bold text-slate-600 tracking-wider uppercase">MERCADO ATIVO HOJE</span>
               </motion.div>
-<<<<<<< HEAD
-
-              <motion.h1
-=======
               
               <motion.h1 
->>>>>>> 7e47923afa33488588fc110797411baf3b3d9610
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 }}
@@ -113,13 +92,8 @@ export default function Home() {
               >
                 Conectando a <span className="text-[#F5A623]">Piscicultura</span> de ponta a ponta.
               </motion.h1>
-<<<<<<< HEAD
-
-              <motion.p
-=======
               
               <motion.p 
->>>>>>> 7e47923afa33488588fc110797411baf3b3d9610
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
@@ -127,13 +101,8 @@ export default function Home() {
               >
                 O porto seguro para o produtor rural negociar sua produção de forma direta, rápida e com valor justo.
               </motion.p>
-<<<<<<< HEAD
-
-              <motion.div
-=======
               
               <motion.div 
->>>>>>> 7e47923afa33488588fc110797411baf3b3d9610
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
@@ -155,27 +124,16 @@ export default function Home() {
                 </div>
               </motion.div>
             </div>
-<<<<<<< HEAD
-
-            <motion.div
-=======
             
             <motion.div 
->>>>>>> 7e47923afa33488588fc110797411baf3b3d9610
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.4 }}
               className="flex-1 relative w-full h-64 md:h-96 rounded-2xl overflow-hidden shadow-2xl"
             >
-<<<<<<< HEAD
-              <Image
-                src="https://images.unsplash.com/photo-1524704654690-b56c05c78a00?q=80&w=1200&auto=format&fit=crop"
-                alt="Piscicultura"
-=======
               <Image 
                 src="https://images.unsplash.com/photo-1524704654690-b56c05c78a00?q=80&w=1200&auto=format&fit=crop" 
                 alt="Piscicultura" 
->>>>>>> 7e47923afa33488588fc110797411baf3b3d9610
                 fill
                 className="object-cover"
                 referrerPolicy="no-referrer"
@@ -192,24 +150,14 @@ export default function Home() {
               <MapPin className="text-[#F5A623]" size={20} />
               <div className="flex-1">
                 <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest">Localização</label>
-<<<<<<< HEAD
-                <input
-                  type="text"
-                  placeholder="Cidade ou Estado"
-=======
                 <input 
                   type="text" 
                   placeholder="Cidade ou Estado" 
->>>>>>> 7e47923afa33488588fc110797411baf3b3d9610
                   className="w-full border-none p-0 text-sm focus:ring-0 placeholder:text-slate-300 font-medium text-[#1F2A44]"
                 />
               </div>
             </div>
-<<<<<<< HEAD
-
-=======
             
->>>>>>> 7e47923afa33488588fc110797411baf3b3d9610
             <div className="flex-1 w-full flex items-center gap-3 px-4 border-r-0 md:border-r border-slate-100 py-2 md:py-0">
               <Fish className="text-[#F5A623]" size={20} />
               <div className="flex-1">
@@ -225,33 +173,19 @@ export default function Home() {
                 </div>
               </div>
             </div>
-<<<<<<< HEAD
-
-=======
             
->>>>>>> 7e47923afa33488588fc110797411baf3b3d9610
             <div className="flex-1 w-full flex items-center gap-3 px-4 py-2 md:py-0">
               <DollarSign className="text-[#F5A623]" size={20} />
               <div className="flex-1">
                 <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest">Preço Máximo</label>
-<<<<<<< HEAD
-                <input
-                  type="text"
-                  placeholder="R$ por kg"
-=======
                 <input 
                   type="text" 
                   placeholder="R$ por kg" 
->>>>>>> 7e47923afa33488588fc110797411baf3b3d9610
                   className="w-full border-none p-0 text-sm focus:ring-0 placeholder:text-slate-300 font-medium text-[#1F2A44]"
                 />
               </div>
             </div>
-<<<<<<< HEAD
-
-=======
             
->>>>>>> 7e47923afa33488588fc110797411baf3b3d9610
             <button className="w-full md:w-auto bg-[#1F2A44] text-white px-8 py-4 rounded-xl font-bold hover:bg-slate-800 transition-colors">
               Filtrar Resultados
             </button>
@@ -274,19 +208,11 @@ export default function Home() {
               </button>
             </div>
           </div>
-<<<<<<< HEAD
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {displayAds.map((ad: any) => (
-              <AdCard
-                key={ad.id}
-=======
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {displayAds.map((ad: any) => (
               <AdCard 
                 key={ad.id} 
->>>>>>> 7e47923afa33488588fc110797411baf3b3d9610
                 id={ad.id}
                 title={ad.title}
                 price={typeof ad.price === 'number' ? ad.price.toFixed(2).replace('.', ',') : ad.price}
@@ -297,11 +223,7 @@ export default function Home() {
               />
             ))}
           </div>
-<<<<<<< HEAD
-
-=======
           
->>>>>>> 7e47923afa33488588fc110797411baf3b3d9610
           <div className="mt-12 text-center">
             <button className="inline-flex items-center gap-2 bg-white px-8 py-4 rounded-2xl border border-slate-200 font-bold text-[#1F2A44] hover:bg-slate-50 transition-colors shadow-sm">
               Ver mais ofertas
@@ -317,11 +239,7 @@ export default function Home() {
               <div className="relative z-10 max-w-sm">
                 <h2 className="text-3xl font-extrabold mb-4 font-plus-jakarta">Venda sem atravessadores.</h2>
                 <p className="text-slate-300 mb-8">Nossa plataforma garante que o lucro da produção fique no bolso de quem realmente produz.</p>
-<<<<<<< HEAD
-                <Link
-=======
                 <Link 
->>>>>>> 7e47923afa33488588fc110797411baf3b3d9610
                   href="/create-ad"
                   className="inline-block bg-[#F5A623] text-white px-8 py-3 rounded-xl font-bold hover:scale-105 transition-transform shadow-lg shadow-orange-900/20"
                 >
@@ -330,11 +248,7 @@ export default function Home() {
               </div>
               <TrendingUp size={200} className="absolute -bottom-10 -right-10 text-white opacity-5 rotate-12 group-hover:rotate-0 transition-transform duration-700" />
             </div>
-<<<<<<< HEAD
-
-=======
             
->>>>>>> 7e47923afa33488588fc110797411baf3b3d9610
             <div className="bg-slate-200 p-8 rounded-3xl flex flex-col justify-between">
               <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm">
                 <ShieldCheck className="text-[#1F2A44]" size={24} />
@@ -351,11 +265,7 @@ export default function Home() {
       <Footer />
 
       {/* Mobile FAB */}
-<<<<<<< HEAD
-      <Link
-=======
       <Link 
->>>>>>> 7e47923afa33488588fc110797411baf3b3d9610
         href="/create-ad"
         className="fixed bottom-6 right-6 md:hidden w-14 h-14 bg-[#F5A623] text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-transform z-50"
       >

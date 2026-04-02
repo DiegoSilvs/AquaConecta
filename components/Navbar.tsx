@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Search, Plus, LogOut, User, MessageSquare, ShoppingBag, Home } from 'lucide-react';
-import { createClient } from '@/lib/supabase';
+import { createClient } from '@/utils/supabase/client';
 import { useRouter, usePathname } from 'next/navigation';
 import { motion } from 'motion/react';
 
@@ -58,20 +58,12 @@ export default function Navbar() {
           <div className="flex justify-between items-center h-16 md:h-20">
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2">
-<<<<<<< HEAD
-              <div className="relative w-8 h-8">
-=======
               <div className="w-8 h-8 bg-[#1F2A44] rounded-lg flex items-center justify-center overflow-hidden relative">
->>>>>>> 7e47923afa33488588fc110797411baf3b3d9610
                  <Image 
                   src="https://lh3.googleusercontent.com/aida/ADBb0uhJ-NlwF7T2xC-dUIi8uk5HJ2ZHmLjWmdSfNAQ5xzKEAdKbCNEMLjZM9gLUICPTs-5sUkwtLN0wlI7Pbnm1pupaRug2qatjB7CgyBuJwmIsd95pSHjtJD3AA15ABo5dW-qDTIHrzy5Dcpl5biMgNhZThOxIlEhGJjhLOVZNXh18NgzSWdwDPJdCY8dUI8wGkW6WDYFZ3M9EcSwpyVK2Cy_kJau8OrUanOassASvSIJRgx9DrvylRxyVBvsI2BOTc0bwb7z6EJ870A" 
                   alt="AquaConecta" 
                   fill
-<<<<<<< HEAD
-                  className="object-contain"
-=======
                   className="object-contain p-1"
->>>>>>> 7e47923afa33488588fc110797411baf3b3d9610
                   referrerPolicy="no-referrer"
                 />
               </div>
