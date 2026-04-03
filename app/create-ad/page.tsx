@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { Fish, Droplets, Utensils, Camera, Lightbulb, ArrowRight, MapPin, Phone, Package, DollarSign, Loader2 } from 'lucide-react';
+import { Fish, Droplets, Utensils, Camera, Lightbulb, ArrowRight, MapPin, Phone, Package, DollarSign, Loader2, Sparkles } from 'lucide-react';
 import { motion } from 'motion/react';
 import Link from 'next/link';
 import { createClient } from '@supabase/supabase-js';
@@ -11,7 +11,7 @@ import { useRouter } from 'next/navigation';
 import { getSupabaseClient } from '@/lib/supabaseClient';
 
 export default function CreateAd() {
-  const [selectedType, setSelectedType] = useState('tilapia');
+  const [selectedType, setSelectedType] = useState('peixes');
   const [quantity, setQuantity] = useState('');
   const [price, setPrice] = useState('');
   const [location, setLocation] = useState('');
@@ -118,9 +118,12 @@ export default function CreateAd() {
               </label>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                 {[
-                  { id: 'tilapia', label: 'Tilápia', icon: Fish },
-                  { id: 'camarao', label: 'Camarão', icon: Droplets },
-                  { id: 'pacu', label: 'Pacu', icon: Utensils },
+                  { id: 'peixes', label: 'Peixes', icon: Fish },
+                  { id: 'camaroes', label: 'Camarões', icon: Droplets },
+                  { id: 'alevinos', label: 'Alevinos', icon: Droplets },
+                  { id: 'equipamentos', label: 'Equipamentos', icon: Package },
+                  { id: 'ornamental', label: 'Ornamental', icon: Sparkles },
+                  { id: 'outros', label: 'Outros', icon: Utensils },
                 ].map((type) => (
                   <button
                     key={type.id}

@@ -61,6 +61,7 @@ export default function Navbar() {
   const navItems = user 
     ? [
         { name: 'Início', href: '/', icon: Home },
+        { name: 'Explorar', href: '/ads', icon: Search },
         { name: 'Chat', href: '/mensagens', icon: MessageSquare },
         { name: 'Meus Pedidos', href: '/pedidos', icon: ShoppingBag },
         { name: 'Perfil', href: '/profile', icon: User },
