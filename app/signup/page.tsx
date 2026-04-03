@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { createClient } from '@/utils/supabase/client';
+import { supabase } from '@/lib/supabaseClient';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Fish, ShoppingBasket, ArrowRight, Loader2 } from 'lucide-react';
@@ -16,15 +16,11 @@ export default function SignUp() {
   const [role, setRole] = useState<'produtor' | 'comprador' | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
   const router = useRouter();
-  const supabase = createClient();
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!supabase) {
-      setError('Supabase não está configurado. Por favor, adicione as chaves no painel de segredos.');
-      return;
-    }
     if (!role) {
       setError('Por favor, escolha se você quer comprar ou vender peixe.');
       return;
@@ -36,8 +32,9 @@ export default function SignUp() {
 
     setLoading(true);
     setError(null);
+    setSuccess(false);
 
-    const { error } = await supabase.auth.signUp({
+    const { error, data } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -49,11 +46,20 @@ export default function SignUp() {
     });
 
     if (error) {
-      setError(error.message);
+      setError(error.message === 'User already registered' 
+        ? 'Este e-mail já está cadastrado.' 
+        : error.message);
       setLoading(false);
     } else {
-      router.push('/');
-      router.refresh();
+      setSuccess(true);
+      // Se não houver necessidade de confirmação de e-mail, podemos redirecionar
+      if (data?.session) {
+        router.push('/dashboard');
+        router.refresh();
+      } else {
+        // Caso precise confirmar e-mail
+        setLoading(false);
+      }
     }
   };
 
@@ -76,6 +82,12 @@ export default function SignUp() {
             {error && (
               <div className="bg-red-50 text-red-500 p-4 rounded-xl text-sm font-medium border border-red-100">
                 {error}
+              </div>
+            )}
+
+            {success && (
+              <div className="bg-emerald-50 text-emerald-600 p-4 rounded-xl text-sm font-medium border border-emerald-100">
+                Conta criada com sucesso! Verifique seu e-mail para confirmar o cadastro.
               </div>
             )}
 

@@ -35,7 +35,7 @@ export default function Pedidos() {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      
+
       <main className="flex-grow pt-24 pb-24 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto w-full">
         <div className="mb-10">
           <h1 className="text-3xl font-extrabold text-[#1F2A44] font-plus-jakarta mb-2">Meus Pedidos</h1>
@@ -44,7 +44,7 @@ export default function Pedidos() {
 
         <div className="space-y-6">
           {orders.map((order) => (
-            <motion.div 
+            <motion.div
               key={order.id}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -52,29 +52,28 @@ export default function Pedidos() {
             >
               <div className="flex flex-col md:flex-row gap-6">
                 <div className="w-full md:w-32 h-32 rounded-2xl overflow-hidden relative flex-shrink-0">
-                  <Image 
-                    src={order.image} 
-                    alt={order.title} 
+                  <Image
+                    src={order.image}
+                    alt={order.title}
                     fill
                     className="object-cover"
                     referrerPolicy="no-referrer"
                   />
                 </div>
-                
+
                 <div className="flex-1 space-y-4">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
                       <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 block">{order.id}</span>
                       <h3 className="text-xl font-bold text-[#1F2A44] font-plus-jakarta">{order.title}</h3>
                     </div>
-                    <div className={`px-4 py-1.5 rounded-full text-xs font-bold flex items-center gap-2 w-fit ${
-                      order.status === 'Concluído' ? 'bg-green-50 text-green-600' : 'bg-blue-50 text-blue-600'
-                    }`}>
+                    <div className={`px-4 py-1.5 rounded-full text-xs font-bold flex items-center gap-2 w-fit ${order.status === 'Concluído' ? 'bg-green-50 text-green-600' : 'bg-blue-50 text-blue-600'
+                      }`}>
                       {order.status === 'Concluído' ? <CheckCircle2 size={14} /> : <Clock size={14} />}
                       {order.status}
                     </div>
                   </div>
-                  
+
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-2">
                     <div>
                       <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-1">Quantidade</p>
@@ -94,7 +93,7 @@ export default function Pedidos() {
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="flex md:flex-col justify-center gap-3 border-t md:border-t-0 md:border-l border-slate-100 pt-6 md:pt-0 md:pl-6">
                   <button className="flex-1 md:flex-none px-6 py-3 bg-[#1F2A44] text-white rounded-xl font-bold text-sm hover:bg-slate-800 transition-colors">
                     Detalhes

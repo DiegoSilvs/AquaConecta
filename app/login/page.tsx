@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { createClient } from '@/utils/supabase/client';
+import { supabase } from '@/lib/supabaseClient';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowRight, Loader2, LogIn } from 'lucide-react';
@@ -15,14 +15,9 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
-  const supabase = createClient();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!supabase) {
-      setError('Supabase não está configurado. Por favor, adicione as chaves no painel de segredos.');
-      return;
-    }
     setLoading(true);
     setError(null);
 
@@ -32,10 +27,12 @@ export default function Login() {
     });
 
     if (error) {
-      setError(error.message);
+      setError(error.message === 'Invalid login credentials' 
+        ? 'E-mail ou senha incorretos.' 
+        : error.message);
       setLoading(false);
     } else {
-      router.push('/');
+      router.push('/dashboard');
       router.refresh();
     }
   };

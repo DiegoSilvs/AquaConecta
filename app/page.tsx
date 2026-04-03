@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { createClient } from '@/utils/supabase/client';
+import { supabase } from '@/lib/supabaseClient';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import AdCard from '@/components/AdCard';
@@ -13,14 +13,9 @@ import Link from 'next/link';
 export default function Home() {
   const [ads, setAds] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const supabase = createClient();
 
   useEffect(() => {
     const fetchAds = async () => {
-      if (!supabase) {
-        setLoading(false);
-        return;
-      }
       const { data, error } = await supabase
         .from('ads')
         .select('*')

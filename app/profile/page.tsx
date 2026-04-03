@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { MapPin, Calendar, Star, Edit, Trash2, Camera, Grid, List, Plus, LogOut, Loader2 } from 'lucide-react';
 import { motion } from 'motion/react';
 import Link from 'next/link';
-import { createClient } from '@/utils/supabase/client';
+import { supabase } from '@/lib/supabaseClient';
 import { useRouter } from 'next/navigation';
 
 export default function Profile() {
@@ -15,15 +15,10 @@ export default function Profile() {
   const [profile, setProfile] = useState<any>(null);
   const [myAds, setMyAds] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const supabase = createClient();
   const router = useRouter();
 
   useEffect(() => {
     const checkUser = async () => {
-      if (!supabase) {
-        setLoading(false);
-        return;
-      }
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
         router.push('/login');
@@ -130,25 +125,6 @@ export default function Profile() {
     );
   }
 
-  if (!supabase) {
-    return (
-      <div className="min-h-screen flex flex-col bg-slate-50">
-        <Navbar />
-        <main className="flex-grow flex items-center justify-center pt-24 pb-12 px-4">
-          <div className="bg-white p-8 rounded-3xl shadow-xl border border-slate-100 w-full max-w-md text-center">
-            <h1 className="text-2xl font-bold text-[#1F2A44] mb-4">Configuração Necessária</h1>
-            <p className="text-slate-500 mb-6">
-              Supabase não está configurado. Por favor, adicione as chaves <code className="bg-slate-100 px-1 rounded">NEXT_PUBLIC_SUPABASE_URL</code> e <code className="bg-slate-100 px-1 rounded">NEXT_PUBLIC_SUPABASE_ANON_KEY</code> no painel de segredos.
-            </p>
-            <Link href="/" className="text-[#F5A623] font-bold hover:underline">
-              Voltar para o Início
-            </Link>
-          </div>
-        </main>
-        <Footer />
-      </div>
-    );
-  }
 
   const role = user?.user_metadata?.role === 'produtor' ? 'Produtor Rural' : 'Comprador';
 
