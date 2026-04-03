@@ -22,7 +22,7 @@ export default function AdCard({ id, title, price, category, quantity, location,
       whileHover={{ y: -5 }}
       className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-transparent hover:border-slate-100 flex flex-col h-full"
     >
-      <Link href={`/product/${id}`} className="relative h-56 overflow-hidden block">
+      <Link href={`/ads/${id}`} className="relative h-56 overflow-hidden block">
         <Image 
           src={image} 
           alt={title} 
@@ -37,7 +37,7 @@ export default function AdCard({ id, title, price, category, quantity, location,
       
       <div className="p-6 flex flex-col flex-1">
         <div className="flex justify-between items-start mb-4">
-          <Link href={`/product/${id}`}>
+          <Link href={`/ads/${id}`}>
             <h3 className="text-lg font-bold text-[#1F2A44] hover:text-[#F5A623] transition-colors line-clamp-2">{title}</h3>
           </Link>
           <div className="text-right flex-shrink-0">
@@ -60,7 +60,7 @@ export default function AdCard({ id, title, price, category, quantity, location,
         <div className="mt-auto pt-4 border-t border-slate-50 flex flex-col gap-3">
           <div className="flex gap-3">
             <Link 
-              href={`/product/${id}`}
+              href={`/ads/${id}`}
               className="flex-1 bg-slate-100 text-[#1F2A44] py-3 rounded-xl font-bold text-sm hover:bg-slate-200 transition-colors text-center"
             >
               Ver detalhes

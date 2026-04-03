@@ -102,16 +102,29 @@ export default function Profile() {
     }
   };
 
-  const handleDeleteAd = async (id: string) => {
+  const handleDeleteAd = async (adId: string) => {
     if (!window.confirm('Tem certeza que deseja excluir este anúncio?')) return;
     
-    const supabase = getSupabaseClient();
-    const { error } = await supabase.from('ads').delete().eq('id', id);
+    try {
+      const supabase = getSupabaseClient();
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (!user) {
+        throw new Error('Usuário não autenticado.');
+      }
 
-    if (error) {
-      alert('Erro ao excluir anúncio: ' + error.message);
-    } else {
-      setMyAds(myAds.filter(ad => ad.id !== id));
+      const { error } = await supabase
+        .from('ads')
+        .delete()
+        .eq('id', adId)
+        .eq('user_id', user.id);
+
+      if (error) throw error;
+      
+      setMyAds(prevAds => prevAds.filter(ad => ad.id !== adId));
+    } catch (err: any) {
+      console.error('Erro ao excluir anúncio:', err);
+      alert('Erro ao excluir anúncio: ' + err.message);
     }
   };
 
@@ -139,7 +152,7 @@ export default function Profile() {
               <div className="relative">
                 <div className="w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-white overflow-hidden shadow-2xl bg-slate-100 relative">
                   <Image 
-                    src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=400&auto=format&fit=crop" 
+                    src={profile?.avatar_url || "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=400&auto=format&fit=crop"} 
                     alt={user?.email || 'Usuário'} 
                     fill
                     className="object-cover"
@@ -314,14 +327,17 @@ export default function Profile() {
                         </div>
                         <span className="text-xl font-black text-[#1F2A44]">R$ {ad.price}/kg</span>
                       </div>
-                      <div className="flex gap-3 pt-4 border-t border-slate-50">
-                        <button className="flex-1 py-3 bg-slate-100 text-[#1F2A44] font-bold rounded-xl hover:bg-slate-200 transition-colors flex items-center justify-center gap-2 text-sm">
+                      <div className="flex gap-3 pt-4 border-t border-slate-50 relative z-50 pointer-events-auto">
+                        <Link 
+                          href={`/edit-ad/${ad.id}`}
+                          className="flex-1 py-3 bg-slate-100 hover:bg-[#F5A623] text-[#1F2A44] hover:text-white font-bold rounded-xl transition-all flex items-center justify-center gap-2 text-sm shadow-sm active:scale-95"
+                        >
                           <Edit size={16} />
                           Editar
-                        </button>
+                        </Link>
                         <button 
                           onClick={() => handleDeleteAd(ad.id)}
-                          className="px-4 py-3 bg-red-50 text-red-500 font-bold rounded-xl hover:bg-red-100 transition-colors"
+                          className="px-4 py-3 bg-red-50 hover:bg-red-500 text-red-500 hover:text-white font-bold rounded-xl transition-all shadow-sm active:scale-95"
                         >
                           <Trash2 size={18} />
                         </button>

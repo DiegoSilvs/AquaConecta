@@ -4,26 +4,45 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { getSupabaseClient } from '@/lib/supabaseClient';
-import { Search, Plus, LogOut, User, MessageSquare, ShoppingBag, Home } from 'lucide-react';
+import { Search, Plus, LogOut, User, MessageSquare, ShoppingBag, Home, LayoutDashboard } from 'lucide-react';
 import { useRouter, usePathname } from 'next/navigation';
 import { motion } from 'motion/react';
 
 export default function Navbar() {
   const [user, setUser] = useState<any>(null);
+  const [profile, setProfile] = useState<any>(null);
   const router = useRouter();
   const pathname = usePathname();
 
   useEffect(() => {
     const supabase = getSupabaseClient();
-    const getUser = async () => {
+    
+    const fetchUserAndProfile = async () => {
       const { data: { user } } = await supabase.auth.getUser();
       setUser(user);
+      
+      if (user) {
+        const { data: profileData } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', user.id)
+          .single();
+        setProfile(profileData);
+      } else {
+        setProfile(null);
+      }
     };
 
-    getUser();
+    fetchUserAndProfile();
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      const currentUser = session?.user ?? null;
+      setUser(currentUser);
+      if (currentUser) {
+        fetchUserAndProfile();
+      } else {
+        setProfile(null);
+      }
     });
 
     return () => subscription.unsubscribe();
@@ -32,16 +51,24 @@ export default function Navbar() {
   const handleLogout = async () => {
     const supabase = getSupabaseClient();
     await supabase.auth.signOut();
+    setUser(null);
+    setProfile(null);
     router.push('/');
     router.refresh();
   };
 
-  const navItems = [
-    { name: 'Explorar', href: '/', icon: Home },
-    { name: 'Chat', href: '/mensagens', icon: MessageSquare },
-    { name: 'Meus Pedidos', href: '/pedidos', icon: ShoppingBag },
-    { name: 'Perfil', href: '/profile', icon: User },
-  ];
+  // Conditional Nav Items
+  const navItems = user 
+    ? [
+        { name: 'Início', href: '/', icon: Home },
+        { name: 'Chat', href: '/mensagens', icon: MessageSquare },
+        { name: 'Meus Pedidos', href: '/pedidos', icon: ShoppingBag },
+        { name: 'Perfil', href: '/profile', icon: User },
+      ]
+    : [
+        { name: 'Início', href: '/', icon: Home },
+        { name: 'Explorar', href: '/ads', icon: Search },
+      ];
 
   const isActive = (href: string) => {
     if (href === '/') return pathname === '/';
@@ -55,8 +82,8 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16 md:h-20">
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-2">
-              <div className="w-10 h-10 bg-transparent rounded-xl flex items-center justify-center overflow-hidden relative border border-slate-100 shadow-sm">
+            <Link href="/" className="flex items-center gap-2 group">
+              <div className="w-10 h-10 bg-transparent rounded-xl flex items-center justify-center overflow-hidden relative border border-slate-100 shadow-sm transition-transform group-hover:scale-105">
                  <Image 
                   src="https://lh3.googleusercontent.com/aida/ADBb0uhJ-NlwF7T2xC-dUIi8uk5HJ2ZHmLjWmdSfNAQ5xzKEAdKbCNEMLjZM9gLUICPTs-5sUkwtLN0wlI7Pbnm1pupaRug2qatjB7CgyBuJwmIsd95pSHjtJD3AA15ABo5dW-qDTIHrzy5Dcpl5biMgNhZThOxIlEhGJjhLOVZNXh18NgzSWdwDPJdCY8dUI8wGkW6WDYFZ3M9EcSwpyVK2Cy_kJau8OrUanOassASvSIJRgx9DrvylRxyVBvsI2BOTc0bwb7z6EJ870A" 
                   alt="AquaConecta" 
@@ -106,6 +133,7 @@ export default function Navbar() {
                     <span className="hidden md:inline">Criar anúncio</span>
                     <span className="md:hidden">Anunciar</span>
                   </Link>
+                  
                   <button 
                     onClick={handleLogout}
                     className="p-2 text-slate-400 hover:text-red-500 transition-colors"
@@ -137,7 +165,7 @@ export default function Navbar() {
 
       {/* Bottom Navigation (Mobile Only) */}
       {user && (
-        <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-slate-100 px-6 py-3 flex justify-between items-center shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
+        <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-slate-100 px-4 py-3 flex justify-between items-center shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
           {navItems.map((item) => (
             <Link 
               key={item.href} 
