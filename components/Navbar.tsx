@@ -56,7 +56,7 @@ export default function Navbar() {
           <div className="flex justify-between items-center h-16 md:h-20">
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-[#1F2A44] rounded-lg flex items-center justify-center overflow-hidden relative">
+              <div className="w-10 h-10 bg-transparent rounded-xl flex items-center justify-center overflow-hidden relative border border-slate-100 shadow-sm">
                  <Image 
                   src="https://lh3.googleusercontent.com/aida/ADBb0uhJ-NlwF7T2xC-dUIi8uk5HJ2ZHmLjWmdSfNAQ5xzKEAdKbCNEMLjZM9gLUICPTs-5sUkwtLN0wlI7Pbnm1pupaRug2qatjB7CgyBuJwmIsd95pSHjtJD3AA15ABo5dW-qDTIHrzy5Dcpl5biMgNhZThOxIlEhGJjhLOVZNXh18NgzSWdwDPJdCY8dUI8wGkW6WDYFZ3M9EcSwpyVK2Cy_kJau8OrUanOassASvSIJRgx9DrvylRxyVBvsI2BOTc0bwb7z6EJ870A" 
                   alt="AquaConecta" 
