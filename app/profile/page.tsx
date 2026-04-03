@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { MapPin, Calendar, Star, Edit, Trash2, Camera, Grid, List, Plus, LogOut, Loader2 } from 'lucide-react';
 import { motion } from 'motion/react';
 import Link from 'next/link';
-import { supabase } from '@/lib/supabaseClient';
+import { getSupabaseClient } from '@/lib/supabaseClient';
 import { useRouter } from 'next/navigation';
 
 export default function Profile() {
@@ -19,6 +19,7 @@ export default function Profile() {
 
   useEffect(() => {
     const checkUser = async () => {
+      const supabase = getSupabaseClient();
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
         router.push('/login');
@@ -51,7 +52,7 @@ export default function Profile() {
       }
     };
     checkUser();
-  }, [router, supabase]);
+  }, [router]);
 
   const [isEditing, setIsEditing] = useState(false);
   const [editForm, setEditForm] = useState({
@@ -72,7 +73,7 @@ export default function Profile() {
   };
 
   const handleLogout = async () => {
-    if (!supabase) return;
+    const supabase = getSupabaseClient();
     await supabase.auth.signOut();
     router.push('/');
     router.refresh();
@@ -80,8 +81,9 @@ export default function Profile() {
 
   const handleUpdateProfile = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!supabase || !user) return;
-
+    if (!user) return;
+    
+    const supabase = getSupabaseClient();
     const { error } = await supabase
       .from('profiles')
       .update({
@@ -100,19 +102,16 @@ export default function Profile() {
     }
   };
 
-  const handleDeleteAd = async (adId: string) => {
-    if (!supabase) return;
-    if (!confirm('Tem certeza que deseja excluir este anúncio?')) return;
-
-    const { error } = await supabase
-      .from('ads')
-      .delete()
-      .eq('id', adId);
+  const handleDeleteAd = async (id: string) => {
+    if (!window.confirm('Tem certeza que deseja excluir este anúncio?')) return;
+    
+    const supabase = getSupabaseClient();
+    const { error } = await supabase.from('ads').delete().eq('id', id);
 
     if (error) {
       alert('Erro ao excluir anúncio: ' + error.message);
     } else {
-      setMyAds(myAds.filter(ad => ad.id !== adId));
+      setMyAds(myAds.filter(ad => ad.id !== id));
     }
   };
 

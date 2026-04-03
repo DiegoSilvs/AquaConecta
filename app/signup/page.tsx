@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { supabase } from '@/lib/supabaseClient';
+import { getSupabaseClient } from '@/lib/supabaseClient';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Fish, ShoppingBasket, ArrowRight, Loader2 } from 'lucide-react';
@@ -34,6 +34,7 @@ export default function SignUp() {
     setError(null);
     setSuccess(false);
 
+    const supabase = getSupabaseClient();
     const { error, data } = await supabase.auth.signUp({
       email,
       password,

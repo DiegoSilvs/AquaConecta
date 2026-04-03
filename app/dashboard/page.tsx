@@ -1,6 +1,6 @@
 'use client';
 
-import { supabase } from '@/lib/supabaseClient';
+import { getSupabaseClient } from '@/lib/supabaseClient';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Navbar from '@/components/Navbar';
@@ -16,6 +16,7 @@ export default function DashboardPage() {
 
   useEffect(() => {
     const getSession = async () => {
+      const supabase = getSupabaseClient();
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
         router.push('/login');

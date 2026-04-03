@@ -8,13 +8,7 @@ import { motion } from 'motion/react';
 import Link from 'next/link';
 import { createClient } from '@supabase/supabase-js';
 import { useRouter } from 'next/navigation';
-
-const getSupabaseClient = () => {
-  return createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
-};
+import { getSupabaseClient } from '@/lib/supabaseClient';
 
 export default function CreateAd() {
   const [selectedType, setSelectedType] = useState('tilapia');

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { supabase } from '@/lib/supabaseClient';
+import { getSupabaseClient } from '@/lib/supabaseClient';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import AdCard from '@/components/AdCard';
@@ -16,6 +16,7 @@ export default function Home() {
 
   useEffect(() => {
     const fetchAds = async () => {
+      const supabase = getSupabaseClient();
       const { data, error } = await supabase
         .from('ads')
         .select('*')
@@ -27,7 +28,7 @@ export default function Home() {
       setLoading(false);
     };
     fetchAds();
-  }, [supabase]);
+  }, []);
 
   const mockAds = [
     {

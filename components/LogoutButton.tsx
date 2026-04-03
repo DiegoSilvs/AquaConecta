@@ -1,6 +1,6 @@
 'use client';
 
-import { supabase } from '@/lib/supabaseClient';
+import { getSupabaseClient } from '@/lib/supabaseClient';
 import { useRouter } from 'next/navigation';
 import { LogOut } from 'lucide-react';
 
@@ -8,6 +8,7 @@ export default function LogoutButton() {
   const router = useRouter();
 
   const handleLogout = async () => {
+    const supabase = getSupabaseClient();
     await supabase.auth.signOut();
     router.refresh(); // Refresh the page to trigger redirect from server
     router.push('/login');

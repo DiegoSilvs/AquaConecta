@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { supabase } from '@/lib/supabaseClient';
 import Link from 'next/link';
 import Image from 'next/image';
+import { getSupabaseClient } from '@/lib/supabaseClient';
 import { Search, Plus, LogOut, User, MessageSquare, ShoppingBag, Home } from 'lucide-react';
 import { useRouter, usePathname } from 'next/navigation';
 import { motion } from 'motion/react';
@@ -14,6 +14,7 @@ export default function Navbar() {
   const pathname = usePathname();
 
   useEffect(() => {
+    const supabase = getSupabaseClient();
     const getUser = async () => {
       const { data: { user } } = await supabase.auth.getUser();
       setUser(user);
@@ -26,9 +27,10 @@ export default function Navbar() {
     });
 
     return () => subscription.unsubscribe();
-  }, [supabase]);
+  }, []);
 
   const handleLogout = async () => {
+    const supabase = getSupabaseClient();
     await supabase.auth.signOut();
     router.push('/');
     router.refresh();
