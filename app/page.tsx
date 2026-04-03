@@ -13,54 +13,31 @@ import Link from 'next/link';
 export default function Home() {
   const [ads, setAds] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchAds = async () => {
+  const fetchAds = async () => {
+    try {
+      setLoading(true);
+      setError(null);
       const supabase = getSupabaseClient();
-      const { data, error } = await supabase
+      const { data, error: sbError } = await supabase
         .from('ads')
         .select('*')
         .order('created_at', { ascending: false });
       
-      if (data) {
-        setAds(data);
-      }
+      if (sbError) throw sbError;
+      setAds(data || []);
+    } catch (err: any) {
+      console.error('Error fetching ads:', err);
+      setError('Não foi possível carregar os anúncios no momento.');
+    } finally {
       setLoading(false);
-    };
+    }
+  };
+
+  useEffect(() => {
     fetchAds();
   }, []);
-
-  const mockAds = [
-    {
-      id: '1',
-      title: 'Tilápia Premium G3',
-      price: '12,00',
-      category: 'Tilápia',
-      quantity: '500kg',
-      location: 'Toledo / PR',
-      image: 'https://images.unsplash.com/photo-1599043513900-ed6fe01d3833?q=80&w=800&auto=format&fit=crop'
-    },
-    {
-      id: '2',
-      title: 'Camarão Cinza 40/60',
-      price: '28,50',
-      category: 'Camarão',
-      quantity: '1.200kg',
-      location: 'Natal / RN',
-      image: 'https://images.unsplash.com/photo-1565689157206-0fddef7589a2?q=80&w=800&auto=format&fit=crop'
-    },
-    {
-      id: '3',
-      title: 'Lote Tambaqui Amazon',
-      price: '15,30',
-      category: 'Tambaqui',
-      quantity: '3.000kg',
-      location: 'Manaus / AM',
-      image: 'https://images.unsplash.com/photo-1524704654690-b56c05c78a00?q=80&w=800&auto=format&fit=crop'
-    }
-  ];
-
-  const displayAds = ads.length > 0 ? ads : mockAds;
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -206,26 +183,76 @@ export default function Home() {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {displayAds.map((ad: any) => (
-              <AdCard 
-                key={ad.id} 
-                id={ad.id}
-                title={ad.title}
-                price={typeof ad.price === 'number' ? ad.price.toFixed(2).replace('.', ',') : ad.price}
-                category={ad.category}
-                quantity={ad.quantity}
-                location={ad.location}
-                image={ad.image_url || ad.image}
-              />
-            ))}
+            {loading ? (
+              // Loading Skeletons
+              Array.from({ length: 3 }).map((_, i) => (
+                <div key={i} className="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-100 h-[400px] animate-pulse">
+                  <div className="h-56 bg-slate-200" />
+                  <div className="p-6 space-y-4">
+                    <div className="h-6 bg-slate-200 rounded w-3/4" />
+                    <div className="h-4 bg-slate-200 rounded w-1/2" />
+                    <div className="space-y-2 mt-4">
+                      <div className="h-4 bg-slate-200 rounded w-full" />
+                      <div className="h-4 bg-slate-200 rounded w-full" />
+                    </div>
+                  </div>
+                </div>
+              ))
+            ) : error ? (
+              // Error State
+              <div className="col-span-full py-12 flex flex-col items-center text-center">
+                <div className="bg-red-50 text-red-500 p-4 rounded-full mb-4">
+                  <Plus className="rotate-45" size={32} />
+                </div>
+                <h3 className="text-xl font-bold text-[#1F2A44] mb-2">Ops! Algo deu errado</h3>
+                <p className="text-slate-500 mb-6">{error}</p>
+                <button 
+                  onClick={() => fetchAds()}
+                  className="bg-[#1F2A44] text-white px-6 py-2 rounded-xl font-bold hover:bg-slate-800 transition-colors"
+                >
+                  Tentar novamente
+                </button>
+              </div>
+            ) : ads.length === 0 ? (
+              // Empty State
+              <div className="col-span-full py-20 flex flex-col items-center text-center">
+                <div className="bg-slate-100 text-slate-400 p-6 rounded-full mb-6">
+                  <Fish size={48} className="opacity-20" />
+                </div>
+                <h3 className="text-2xl font-extrabold text-[#1F2A44] mb-2 font-plus-jakarta">Nenhum anúncio encontrado</h3>
+                <p className="text-slate-500 max-w-sm mb-8">Parece que ainda não temos ofertas nesta categoria ou região. Seja o primeiro a anunciar!</p>
+                <Link 
+                  href="/create-ad"
+                  className="bg-[#F5A623] text-white px-8 py-3 rounded-xl font-bold hover:scale-105 transition-transform"
+                >
+                  Criar Anúncio
+                </Link>
+              </div>
+            ) : (
+              // Real Data
+              ads.map((ad: any) => (
+                <AdCard 
+                  key={ad.id} 
+                  id={ad.id}
+                  title={ad.title}
+                  price={typeof ad.price === 'number' ? ad.price.toFixed(2).replace('.', ',') : ad.price}
+                  category={ad.category}
+                  quantity={ad.quantity}
+                  location={ad.location}
+                  image={ad.image_url || 'https://images.unsplash.com/photo-1599043513900-ed6fe01d3833?q=80&w=800&auto=format&fit=crop'}
+                />
+              ))
+            )}
           </div>
           
-          <div className="mt-12 text-center">
-            <button className="inline-flex items-center gap-2 bg-white px-8 py-4 rounded-2xl border border-slate-200 font-bold text-[#1F2A44] hover:bg-slate-50 transition-colors shadow-sm">
-              Ver mais ofertas
-              <ChevronDown size={18} />
-            </button>
-          </div>
+          {!loading && !error && ads.length > 0 && (
+            <div className="mt-12 text-center">
+              <button className="inline-flex items-center gap-2 bg-white px-8 py-4 rounded-2xl border border-slate-200 font-bold text-[#1F2A44] hover:bg-slate-50 transition-colors shadow-sm">
+                Ver mais ofertas
+                <ChevronDown size={18} />
+              </button>
+            </div>
+          )}
         </section>
 
         {/* Bento Grid Benefits */}
