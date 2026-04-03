@@ -6,8 +6,15 @@ import Footer from '@/components/Footer';
 import { Fish, Droplets, Utensils, Camera, Lightbulb, ArrowRight, MapPin, Phone, Package, DollarSign, Loader2 } from 'lucide-react';
 import { motion } from 'motion/react';
 import Link from 'next/link';
-import { supabase } from '@/lib/supabaseClient';
+import { createClient } from '@supabase/supabase-js';
 import { useRouter } from 'next/navigation';
+
+const getSupabaseClient = () => {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  );
+};
 
 export default function CreateAd() {
   const [selectedType, setSelectedType] = useState('tilapia');
@@ -22,6 +29,7 @@ export default function CreateAd() {
 
   useEffect(() => {
     const checkUser = async () => {
+      const supabase = getSupabaseClient();
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
         router.push('/login');
@@ -31,11 +39,13 @@ export default function CreateAd() {
       }
     };
     checkUser();
-  }, [router, supabase]);
+  }, [router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!supabase || !user) return;
+    if (!user) return;
+    
+    const supabase = getSupabaseClient();
 
     setSubmitting(true);
     
